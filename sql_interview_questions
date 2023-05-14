@@ -1,0 +1,477 @@
+Introduction:
+create table emp (salary decimal (6,2))  --numeric/decimal
+
+
+insert into emp values(232.8)
+
+select *from emp
+
+create table emp2 (name char(10))
+insert into emp2 values('ﯼhello')
+select *from emp2
+
+create table emp3 (name nchar(10))
+insert into emp3 values(N'ﯼhello')
+select *from emp3
+
+create table emp4 (name nchar(10), emp_ID int primary key , salary numeric(10,5))
+insert into emp4 values ('rahul', 101, 10.000)
+insert into emp4 values ('rahul', 102, 10.000)
+insert into emp4 values ('rahul', 101, 10.000)
+
+select *from emp4
+
+create table salary (emp_id int foreign key references emp4(emp_ID), current_sal int)
+insert into salary values(101, 67676)
+insert into salary values(11, 67676)
+
+select *from salary
+
+create database election_db
+create schema voters
+
+drop table Citizen
+
+create table Citizen(citizen_id int primary key identity(101,1),
+citizen_name varchar(20) not null,
+aadhar_no varchar(12) unique,
+country varchar(15))
+
+
+insert into Citizen values(
+'sukanya',
+12345657657,
+'india')
+
+
+insert into Citizen values(
+'larshu',
+12345657655,
+'india')
+
+insert into Citizen values(
+'bub',
+12345657659,
+'india')
+
+insert into Citizen(citizen_name) values('ram')
+
+insert into Citizen(citizen_name) values('sita')
+
+select *from Citizen
+
+drop table Voters
+
+create table Voters(id int primary key identity(1,1),
+voter_id int not null unique,
+voter_name varchar(10) not null,
+age int check(age>=18),
+mobile_no varchar(10) unique,
+citizen_id int foreign key references Citizen(citizen_id))
+
+insert into Voters values(1000, 'sukanya', 30, 8789789789, 101)
+
+insert into Voters values(1010, 'larshu', 29, 8789789729, 102)
+
+insert into Voters values(1020, 'bub', 30, 8789719789, 103)
+
+
+insert into Voters values(1030, 'ram', 50, 8789799789, 104)
+
+insert into Voters values(1040, 'shyam', 10, 8789709789)
+
+select *from Voters
+
+select *from Voters
+
+create table Sales(sales_id int primary key identity(101,1),
+product_name varchar(20) not null, 
+date_d smalldatetime, qty int, price decimal(5,2))
+
+insert into Sales values('Samsung wm',GETDATE(),1,134.44)
+select *from Sales
+
+v
+insert into Sales values('laptop',GETDATE(),1,133.44)
+
+
+insert into Sales values('iphone',GETDATE(),1,131.44)
+
+insert into Sales values('refrigerator',GETDATE(),5,467.44)
+
+select *from Sales
+
+select top(3)* from Sales ---fetches top2 rows
+
+select distinct product_name from Sales --unique values from the column
+
+alter table Sales add discount decimal(5,2)
+
+select *from Sales
+
+insert into Sales values('laptop',GETDATE(),1,133.44,10)
+
+alter table Sales drop column discount
+
+alter table Sales add qty_available decimal(5,2)
+
+--change the datatype--
+alter table Sales alter column qty_available int
+
+alter table Sales drop column qty_available
+
+---ORDER BY--- SORT IN ASCENDING/DESCENDING
+
+select *from Sales order by price
+
+select *from Sales order by price desc
+
+---WHERE Clause - use various operators-- basically we are filtering--
+select *from sales where price>300
+
+select *from sales where price>300 or sales_id=101 --any one condition is true
+select *from sales where price>300 and sales_id=101 ---both the codition mjst satisfy
+
+
+---LIKE---
+select *from Sales where product_name like 'sam%'
+
+select *from Sales where product_name like '%ne'
+
+select *from Sales where product_name like '%un%'
+
+---NOT LIKE--
+
+select *from Sales where product_name NOT like '%ne'
+
+select *from Sales where product_name IN ('iphone','laptop')
+select *from Sales where product_name not IN ('iphone','laptop')
+
+
+--ORDER BY 2--
+
+SELECT *from Sales order by 4 
+
+SELECT *from Sales order by 4 desc
+
+select *from Sales order by
+
+select *from Sales
+
+alter table Sales add discount decimal(5,2)
+
+insert into Sales values('android', getdate(), 2, 160.44, 10)
+
+---no.of rows---
+select count(product_name) from Sales
+select count(*) from Sales --total no.of records
+
+select count(distinct product_name) from Sales  ---count of unique products--
+
+select count(discount) from Sales
+
+select *from Sales where discount is null
+select *from Sales where discount is not null
+
+select min(price) from Sales
+select max(price) from Sales
+
+select *from Sales where price in (select min(price) from Sales)
+select *from Sales where price in (select max(price) from Sales)
+
+select avg(price) from Sales
+
+select stdev(price) from Sales
+
+---could run mathematical expressions in sql SELECT SQRT(100), SELECT 10*25+8
+
+SELECT product_name, count(product_name) from Sales group by product_name
+
+SELECT product_name, count(product_name) as count_prod, SUM(price) as sum_price, avg(price) as avg_price from Sales group by product_name
+
+SELECT product_name, count(product_name) as count_prod, SUM(price) as sum_price, avg(price) as avg_price from Sales group by product_name
+having avg(price)>200
+
+select *from sales
+
+create database ecommerce
+
+create table Product (product_id int primary key identity(1,1), product_name varchar(100) not null)
+
+select *from product
+
+insert into Product values('Washing Machine')
+insert into Product values('iphone')
+insert into Product values('laptop')
+insert into Product values('photo frame')
+insert into Product values('toaster')
+select *from product
+
+create table sales (sales_id int primary key identity(1,1),
+product_id int foreign key references product(product_id),
+qty int,
+price decimal(5,2),
+discount decimal(5,2))
+
+insert into sales values (1, 1, 250,20)
+insert into sales values (2, 1, 150,20)
+insert into sales values (3, 1, 650,60)
+insert into sales values (4, 1, 50,40)
+insert into sales values (1, 1, 150,10)
+insert into sales values (1, 1, 250,20)
+
+select *from product
+select *from sales
+
+select *from product as P 
+inner join sales as S 
+on p.product_id= s.product_id
+
+----INNER JOIN-all the matching records will be fetched-------
+
+
+select p.product_name, s.price from product as p
+inner join sales as S 
+on p.product_id= s.product_id
+
+------LEFT JOIN- all the matching records from both table and the records which are not matching from left-----
+
+select *from product as p
+left join sales as s
+on p.product_id=s.product_id
+
+------RIGHT JOIN-----ALL THE RECORDS FROM RIGHT TABLE AND THE MATCHING RECORDS FROM BOTH THE TABLE---
+
+-----FULL OUTER JOIN--FETCHES ALL THE RECORDS(MATCHING & UNMATCHING FROM BOTH THE TABLES
+--full outer join is combiation of both left and right join---
+select *from product as p
+full outer join sales as s
+on p.product_id=s.product_id
+
+
+select p.product_name, s.price from 
+product p inner join sales s 
+on p.product_id=s.sales_id
+
+
+select p.product_name, sum(s.price) from product p
+inner join sales as s
+on p.product_id=s.product_id
+group by p.product_name
+
+
+
+select p.product_name, sum(s.price) from product p
+left join sales as s
+on p.product_id=s.product_id
+group by p.product_name
+
+
+select p.product_name, sum(isnull(s.price,0)) as total_sales_value
+from product p
+left join sales as s
+on p.product_id=s.product_id
+group by p.product_name
+
+declare @max_price int
+
+select @max_price = max(price) from sales
+--print @max_price
+
+--print 'maximum sale price' + cast(@max_price as varchar)
+
+---IF-ELSE---BEGIN-END--
+
+IF @max_price >400
+begin
+print("max sales for this month" + cast(@max_price as varchar)
+
+
+
+
+create table Student_scores (student_id int primary key identity(1,1),
+student_name varchar(100),
+score decimal(5,2))
+
+insert into Student_scores values ('ravi', 90)
+
+insert into Student_scores values('ishan', 70)
+
+insert into Student_scores values('vishu', 80)
+
+insert into Student_scores values('sham', 60)
+
+insert into Student_scores values('shrou', 90)
+
+select *from Student_scores
+
+SELECT STUDENT_NAME,
+CASE
+    WHEN score>=100 and score>=90 then 'A'
+    WHEN SCORE<=89 and score>=70 then 'B'
+    WHEN SCORE<-69 AND SCORE>=60 THEN 'C'
+    WHEN SCORE <=59 AND SCORE>=50 THEN 'D'
+	ELSE 'E'
+
+END AS 'GRADE'
+FROM STUDENT_SCORES
+
+1.	TCP/IP Port of an sql server can be changed, by default its 1433.
+2.	What is the order of clauses in an SQL SELECT statements?
+The order goes : SELECT, FROM, WHERE, GROUP BY, HAVING, ORDER BY.
+3.	How would you select random rows from a table?
+SELECT *from table_name sample(5);- sample is the feature of some other database like oracle.
+For sql database we use TOP function to fetch top 2 rows
+
+Select TOP 2* from dbo.Sales
+Order by NEWID();
+The NEWID() function in SQL Server creates a unique value of type unique identifier. One use of the NEWID() function is in generating random rows from a table
+4.	How will you rename a column in the output of the sql query?
+Select column_name  as col_name1 from dbo.sales ;
+      
+5.	Write an sql query that gets the 1st two characters of last_name from the employee table?
+
+Select substring(last_name, 1,2) from Employee;
+
+6.	Write an sql query that gets the department from the employee table after replacing ‘e’ with ‘Z’.
+Select replace(department,’e’,’Z’) from Employee;
+
+7.	Write an sql query that gets the first and last names from the employee table together separated by a space in a single column full_name.
+Select concat(first_name,’ ‘, last_name ) as ‘full_name’ from Employee
+
+       6.  Printing a column after removing white spaces from the left or right side. 
+Select TRIM(column_name) as trimmed_column from table_name
+Getting unique values only from a column and avoiding duplicates.
+Select distinct(column_name) from table_name
+Printing in ascending or descending order Print all details associated with a specific employeeID, name, etc. 
+Select *from table_name 
+Order by column_name desc;/asc;
+8.	Print all details associated with an employeeID, name, etc. that starts or ends with a gi
+Select *from table_name 
+Where employee_id= ‘101’ or name=’sen’
+Select *from table_name
+Where name like ‘%t’
+
+ Important interview questions:
+9.	Given a table with user_ids and dates on which users visited a specific platform, find out the top 100 visitors using SQL until yesterday.
+Ans: assuming we have a table called ‘user_visits’ that contains the ‘user-id’ and the ‘visit_date’ for each visit to the platform.
+
+Select user_id count(*) as visit_count
+From user_visits
+Where visit_date = DATE_TRUNC(‘day’, CURRENT_DATE – INTERVAL ‘1’ DAY)--- filters visits until date
+Group by user_id
+Order by visit_count desc
+Limit 100
+
+10.	You’re given two tables - one which reflects the number of messages sent by Facebook and another that reflects the number of users who responded to the message. Write an SQL query to calculate the confirmation percentage in this case. 
+Ans: assuming we have 2 tables, ‘message_count’ which has attributes ‘msg_id’ and ‘msg_count’. Response_count has ‘response_count’ .
+Select message_count.message_id,
+message_count.msg_count as a,
+response_counts.resp_count as b,
+(a/b ) *100 as confirmation_percentage
+from message_count 
+inner join resp_counts on message_counts.message_id= response_count.response_id
+Note that if some messages were sent but received no response, the confirmation percentage for those messages will be zero. If this is not desirable, you can modify the query to use LEFT JOIN instead of JOIN, which will include all messages in the result set, even if they have no corresponding response count. In that case, you can use the COALESCE function to replace null response counts with zero, like so:
+SELECT
+    message_counts.message_id,
+    message_counts.message_count,
+    COALESCE(response_counts.response_count, 0) AS response_count,
+    COALESCE(response_counts.response_count, 0) / message_counts.message_count * 100 AS confirmation_percentage
+FROM
+    message_counts
+    LEFT JOIN response_counts ON message_counts.messsage_id =  response_counts.message_id
+
+11.	You’re given a table with complaint tickets covering different types of complaints. Write an SQL query to find the number of tickets under each type and the number of processed tickets under each category. 
+Ans: assuming that we have a table named ‘complaint_tickets’ with columns ‘ticket_id,’complaint_id’,’status’. Where ‘complaint_type’ represents the type of complaint and ‘status’ represents whether the ticket has been processed or not.
+Select complaint_type,
+Count(*) as total_tickets,
+Count(case when status=’processed’ then 1 end) as processed_tickets
+From complaint_tickets
+Groupby complaint_type
+
+12.	You’re given a table with a million rows. Tell me how you’d add a column from the original data source without impacting the user experience?
+Ans: create a new table with same schema as the original table, plus the new column we wanted to add.
+Create table new_table_name AS
+Select col1,col2,clo3,…..coln, <new_column_name>
+From original_table_name;
+Use batch process to update the new column with the data from the original data source. Depending the size and complexity of the data , we may need to write a script or use an ETL tool to accomplish it. 
+Once the new column has been fully populated in the new table, rename the original table to backup name,
+Alter table original_table_name RENAME to backup_tbale_name
+Alter table new_table rename to original_table
+
+13.	Say you have a table that represents the salaries of employees in a company. The table represents the annual salaries of employees from different departments, with bonuses and variable compensation packages. Write an SQL query to derive the monthly salary of a particular employee and whether or not the employee must receive their variable compensation for the given month. 
+Ans: assuming that the table has columns ‘emp_id’, ‘department’,’annaul_salary’,’bonus’,’variable_compensation’
+Select emp_id, department,
+(annual_salary + bonus)/12 as monthly_salary,
+CASE WHEN MONTH(NOW())= 12 AND variable_compensation=’Y’ THEN ‘N’
+Else variable_compensation END as receive_variable_compensation
+From employee_salaries
+Where employee_id= 103
+
+14.	Explain the process of designing a database for a fastfood restaurant.
+Step1: identifying data entities (customers,employees,menu items,orders,suppliers,inventory etc)
+Step2: once the data entities have been identified, then next step is to determine relationships between them. For example an order related to the customer, an employee, and the menu items that were ordered. Next cretaong conceptual and logical model. Define data attributes like customer, this include their names,address,phonenumber ect.
+Create the physical database. Then test and implement it.
+Finally maintain and update
+15.	Create a Schema table to represent the client click rate for a given digital campaign. 
+CREATE TABLE client_click_rate (
+  id INT PRIMARY KEY,
+  campaign_name VARCHAR(255),
+  client_name VARCHAR(255),
+  date DATE,
+  clicks INT,
+  impressions INT,
+  click_rate DECIMAL(5,2)
+);
+
+16.	You’re given a dataset schema that contains information about different buyers on an e-commerce site. Write an SQL query to compute the total sales of a given product on a given day. 
+Ans: select SUM(order_items.product_quantity *order_items. price) as total_sales,
+From order_table
+INNER JOIN order_items ON orders_table.id = order_items.order_id
+Where orders.order_date = now() AND order_items.product_id=’232’
+
+17.	A bakery sells X items in the first three hours of a given day and X+n number of items during the last three hours of the day. Write an SQL query to determine the total value of item “v” sales during the last three hours of the day. 
+Ans: SELECT SUM(quantity * price) AS total_value
+FROM sales
+WHERE item_name = 'v'
+  AND time_of_sale BETWEEN DATEADD(hour, -3, DATEADD(day, DATEDIFF(day, 0, GETDATE()), 0))
+                        AND DATEADD(day, DATEDIFF(day, 0, GETDATE()) + 1, -3)
+
+18.	Write a query to find nth highest salary of an employee
+Ans: to find the 3rd highest salary, 
+Select DISTINCT salary
+From employees
+ORDER BY salary DESC
+OFFSET 2
+LIMIT 1;
+
+
+To find 4th highest salary using window function: SUB-QUERY
+Select salary 
+From
+(select salary, ROW_NUMBER() OVER (order by salary desc) as row_num
+From employee)
+Subquery
+Where row_num = 3;
+
+1.
+Sol: 1.Inner join – fetches only matching records
+Select *from table A inner join table B on A.id=B.id
+Id-2
+2.Left join: fetches all the records from the table A and ONLY matching records from both the tables
+Select *from table A left join table B on A.id = B.id
+Id- 2,3,null,1
+3.Right join: fetches all the records from the table B and only matching records from both the tables.
+Select *from table B right join table A on B.ID = A.id
+Id-2,2,1,null
+4.full outer join: returns all rows from both tables, with null values for non-matching rows.
+Id-2,3,null,1,2,null
+Select *from table A full outer join table B on A.id = B.id
+2.  
+b. write a query to schedule a match between each team.
+c. write a query to find nth highest salary of an employee
+select sum(salary) from employee over salary
+group
+
+
+
