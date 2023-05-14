@@ -1,0 +1,85 @@
+# For postgrEsql DB:
+
+import psycopg2              #python library for postgresql
+
+#establish connection
+connction = psycopg2.connect(
+host="5432",
+database="myDB",
+user = "postgres"
+password="Bubbly@1993"
+)
+
+#create cursor
+
+cur= connction.cursor()
+
+#execute SQL query
+cur.execute("SELECT *from Sales")
+
+#fetch rows
+rows = cur.fetchall()
+
+#print results
+for i in rows:
+    print(i)
+    
+# close the cursor and connection
+cur.close()
+connction.close()
+#for sql server connection
+
+import pyodbc
+
+#establish a connection
+connection2 = pyodbc.connect(
+host=" ",
+database= " ",
+    password=" ",
+    username=" "
+)
+
+#create cursor
+cur2 = connection2.cur2
+
+#exeucte sql query
+cur.execute("select *from Sales")
+
+#fetch all rows
+rows1= cur.fetchall()
+
+for i in rows:
+    print(i)
+    
+cur2.close()
+connection.close()
+
+
+#connecting to the db
+import pyodbc
+conn= pyodbc.connect(
+"Driver= {SQL Server Native Client 11.0};"
+"Server= DESKTOP-64ENFE1\\SQLEXPRESS;"
+"Database= ecommerce ;"
+"UID=DESKTOP-64ENFE1\\User;"
+"PWD= Bubbly@19;"
+)
+
+#OPEN A CURSOR TO PERFORM DATABASE OPERATIONS
+cur= conn.cursor()
+
+#insert query and values
+query = "insert into Citizen values('ramesh',103984844, 'uk')"
+
+
+
+# Commit the changes to the database
+conn.commit()
+
+# Close the cursor and connection
+cur.close()
+conn.close()
+
+
+
+
